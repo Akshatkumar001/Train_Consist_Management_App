@@ -1,42 +1,39 @@
-import java.util.*;
-import java.util.stream.*;
-
-class Bogie {
-    String name;
-    int capacity;
-
-    // Constructor
-    Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
-    }
-}
+import java.util.Scanner;
+import java.util.regex.*;
 
 public class Main {
     public static void main(String[] args) {
 
-        // Create List of Bogies
-        List<Bogie> bogies = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
 
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 56));
-        bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("Sleeper", 70));
+        // Take user input
+        System.out.print("Enter Train ID (Format: TRN-1234): ");
+        String trainId = sc.nextLine();
 
-        // Display bogies
-        System.out.println("Bogies in Train:");
-        for (Bogie b : bogies) {
-            System.out.println(b.name + " -> " + b.capacity);
-        }
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCode = sc.nextLine();
 
-        // --- AGGREGATE USING STREAM ---
-        int totalCapacity = bogies.stream()
-                .map(b -> b.capacity)        // extract capacity
-                .reduce(0, Integer::sum);   // sum all values
+        // Define regex patterns
+        String trainPattern = "TRN-\\d{4}";      // TRN-1234
+        String cargoPattern = "PET-[A-Z]{2}";    // PET-AB
 
-        // Display total
-        System.out.println("\nTotal Seating Capacity of Train: " + totalCapacity);
+        // Compile patterns
+        Pattern pTrain = Pattern.compile(trainPattern);
+        Pattern pCargo = Pattern.compile(cargoPattern);
 
-        System.out.println("\nUC10 aggregation completed...");
+        // Create matcher objects
+        Matcher mTrain = pTrain.matcher(trainId);
+        Matcher mCargo = pCargo.matcher(cargoCode);
+
+        // Validate using matches()
+        boolean isTrainValid = mTrain.matches();
+        boolean isCargoValid = mCargo.matches();
+
+        // Display results
+        System.out.println("\nValidation Results:");
+        System.out.println("Train ID Valid: " + isTrainValid);
+        System.out.println("Cargo Code Valid: " + isCargoValid);
+
+        System.out.println("\nUC11 validation completed...");
     }
 }
