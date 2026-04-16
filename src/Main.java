@@ -1,49 +1,42 @@
 import java.util.*;
 import java.util.stream.*;
 
-public class Main {
+class Bogie {
+    String name;
+    int capacity;
 
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
+    // Constructor
+    Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
     }
+}
 
+public class Main {
     public static void main(String[] args) {
 
-        System.out.println("====");
-        System.out.println("UC9 - Group Bogies by Type");
-        System.out.println("====");
-
+        // Create List of Bogies
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 56));
         bogies.add(new Bogie("First Class", 24));
         bogies.add(new Bogie("Sleeper", 70));
-        bogies.add(new Bogie("AC Chair", 60));
 
-        System.out.println("\nAll Bogies:");
+        // Display bogies
+        System.out.println("Bogies in Train:");
         for (Bogie b : bogies) {
             System.out.println(b.name + " -> " + b.capacity);
         }
 
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        // --- AGGREGATE USING STREAM ---
+        int totalCapacity = bogies.stream()
+                .map(b -> b.capacity)        // extract capacity
+                .reduce(0, Integer::sum);   // sum all values
 
-        System.out.println("\nGrouped Bogies:");
+        // Display total
+        System.out.println("\nTotal Seating Capacity of Train: " + totalCapacity);
 
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-            System.out.println("\nBogie Type: " + entry.getKey());
-            for (Bogie b : entry.getValue()) {
-                System.out.println("Capacity -> " + b.capacity);
-            }
-        }
-
-        System.out.println("\nUC9 grouping completed ...");
+        System.out.println("\nUC10 aggregation completed...");
     }
 }
